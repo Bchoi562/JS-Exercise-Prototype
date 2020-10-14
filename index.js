@@ -44,25 +44,25 @@ function Person(personName, personAge) {
   this.age = personAge
   this.stomach = [];
 
-} 
+}
 
-Person.prototype.toString = function(){
+Person.prototype.toString = function () {
   return `${this.name}, ${this.age}`;
 }
 
-Person.prototype.eat = function(someFood){
-  if(this.stomach.length < 10){
+Person.prototype.eat = function (someFood) {
+  if (this.stomach.length < 10) {
     this.stomach.push(someFood);
   }
 }
 
-Person.prototype.poop = function(){
-  this.stomach=[];
+Person.prototype.poop = function () {
+  this.stomach = [];
 }
 
 
-let neo = new Person('Neo',20);
-let mary = new Person('Mary',50);
+let neo = new Person('Neo', 20);
+let mary = new Person('Mary', 50);
 
 console.log(neo);
 console.log(neo.age);
@@ -85,22 +85,38 @@ console.log(neo.eat('edible'));
 
 function Car(carModel, mpg) {
   this.model = carModel,
-  this.milesPerGallon = mpg,
-  this.tank = 0,
-  this.odometer = 0
+    this.milesPerGallon = mpg,
+    this.tank = 0,
+    this.odometer = 0
 }
 
-Car.prototype.fill = function(gallons){
+Car.prototype.fill = function (gallons) {
   this.tank += gallons;
 }
+Car.prototype.drive = function (miles) {
 
-let batmobile = new Car('BatMobile',20);
+  if (this.tank >= miles / this.milesPerGallon) {
+    this.odometer += miles;
+    this.tank -= (miles / this.milesPerGallon);
+  }
+
+  else{
+    this.odometer += this.milesPerGallon * this.tank;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  };
+
+  
+
+}
+let batmobile = new Car('BatMobile', 20);
 
 console.log(batmobile.model);
 console.log(batmobile.milesPerGallon);
-console.log(batmobile.fill(35));
+console.log(batmobile.fill(1));
 console.log(batmobile.tank);
-
+console.log(batmobile.drive(40));
+console.log(batmobile.tank);
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -116,11 +132,11 @@ function Baby(name, age, favoriteToy) {
 }
 Baby.prototype = Object.create(Person.prototype);
 
-Baby.prototype.play = function(){
+Baby.prototype.play = function () {
   return `Playing with ${this.favoriteToy}, ${this.favoriteToy} being the favorite toy.`
 }
 
-let baby = new Baby('Lucy',5,'trains');
+let baby = new Baby('Lucy', 5, 'trains');
 
 
 
@@ -150,8 +166,16 @@ console.log(baby.play());
 ///////// END OF CHALLENGE /////////
 if (typeof exports !== 'undefined') {
   module.exports = module.exports || {}
-  if (Airplane) { module.exports.Airplane = Airplane }
-  if (Person) { module.exports.Person = Person }
-  if (Car) { module.exports.Car = Car }
-  if (Baby) { module.exports.Baby = Baby }
+  if (Airplane) {
+    module.exports.Airplane = Airplane
+  }
+  if (Person) {
+    module.exports.Person = Person
+  }
+  if (Car) {
+    module.exports.Car = Car
+  }
+  if (Baby) {
+    module.exports.Baby = Baby
+  }
 }
