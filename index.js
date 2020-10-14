@@ -39,10 +39,36 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
+function Person(personName, personAge) {
+  this.name = personName;
+  this.age = personAge
+  this.stomach = [];
 
 }
 
+Person.prototype.toString = function () {
+  return `${this.name}, ${this.age}`;
+}
+
+Person.prototype.eat = function (someFood) {
+  if (this.stomach.length < 10) {
+    this.stomach.push(someFood);
+  }
+}
+
+Person.prototype.poop = function () {
+  this.stomach = [];
+}
+
+
+let neo = new Person('Neo', 20);
+let mary = new Person('Mary', 50);
+
+console.log(neo);
+console.log(neo.age);
+console.log(neo.toString);
+console.log(neo.poop);
+console.log(neo.eat('edible'));
 /*
   TASK 2
     - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
@@ -57,10 +83,40 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-
+function Car(carModel, mpg) {
+  this.model = carModel,
+    this.milesPerGallon = mpg,
+    this.tank = 0,
+    this.odometer = 0
 }
 
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+}
+Car.prototype.drive = function (miles) {
+
+  if (this.tank >= miles / this.milesPerGallon) {
+    this.odometer += miles;
+    this.tank -= (miles / this.milesPerGallon);
+  }
+
+  else{
+    this.odometer += this.milesPerGallon * this.tank;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  };
+
+  
+
+}
+let batmobile = new Car('BatMobile', 20);
+
+console.log(batmobile.model);
+console.log(batmobile.milesPerGallon);
+console.log(batmobile.fill(1));
+console.log(batmobile.tank);
+console.log(batmobile.drive(40));
+console.log(batmobile.tank);
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -68,18 +124,40 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+
 
 }
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}, ${this.favoriteToy} being the favorite toy.`
+}
+
+let baby = new Baby('Lucy', 5, 'trains');
+
+
+
+// console.log(baby.name);
+// console.log(baby.favoriteToy);
+
+console.log(baby.play());
+
+
+
+
+
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. window/global object binding : if 'this' isn't binded to anything yet,  it will always be to the global scope of window/console. 
+  2. implicit binding: 'this' will always refer to whatever is behind the '.' . example: me.sayName , 'this' would refer to 'me'
+  3. New Binding: 'this' will refer to the 'new' object made through the original function. 
+  4. Explicit Binding: 'this' will refer to whatever you explicitly bind with the keywords .apply or .call.  
 */
 
 
@@ -88,8 +166,16 @@ function Baby() {
 ///////// END OF CHALLENGE /////////
 if (typeof exports !== 'undefined') {
   module.exports = module.exports || {}
-  if (Airplane) { module.exports.Airplane = Airplane }
-  if (Person) { module.exports.Person = Person }
-  if (Car) { module.exports.Car = Car }
-  if (Baby) { module.exports.Baby = Baby }
+  if (Airplane) {
+    module.exports.Airplane = Airplane
+  }
+  if (Person) {
+    module.exports.Person = Person
+  }
+  if (Car) {
+    module.exports.Car = Car
+  }
+  if (Baby) {
+    module.exports.Baby = Baby
+  }
 }
